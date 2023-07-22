@@ -6,11 +6,11 @@ import {
   ImageBackground,
   TextInput,
   TouchableOpacity,
-  Platform
+  Platform,
 } from "react-native";
 
 export default function App() {
-  console.log(Platform.OS)
+  console.log(Platform.OS);
   const image = {
     uri: "https://faktypro.com.ua/uploads/img/11-cikavih-faktiv-pro-gori.jpg",
   };
@@ -19,18 +19,28 @@ export default function App() {
       <ImageBackground style={styles.image} source={image}>
         <View style={styles.form}>
           <Text style={styles.text}>Реєстрація</Text>
-          <TextInput style={styles.input} placeholder="Логін" />
+          <TextInput
+            style={styles.input}
+            placeholder="Логін"
+            placeholderTextColor="#BDBDBD"
+          />
           <View style={{ marginTop: 16, marginBottom: 16 }}>
             <TextInput
               style={styles.input}
               placeholder="Адреса електронної пошти"
+              placeholderTextColor="#BDBDBD"
             />
           </View>
-          <TextInput
-            style={styles.input}
-            placeholder="Пароль"
-            secureTextEntry={true}
-          />
+          <View>
+            <TextInput
+              style={styles.input}
+              placeholder="Пароль"
+              secureTextEntry={true}
+              placeholderTextColor="#BDBDBD"
+            />
+            <Text style={styles.showPassword}>Показати</Text>
+          </View>
+
           <TouchableOpacity activeOpacity={0.8} style={styles.button}>
             <Text style={styles.btnTitle}>Зареєструватися</Text>
           </TouchableOpacity>
@@ -50,7 +60,7 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     resizeMode: "cover",
     // alignItems: "center",
   },
@@ -100,13 +110,23 @@ const styles = StyleSheet.create({
     fontWeight: 400,
   },
   finishText: {
-    color: '#1B4371',
+    color: "#1B4371",
     marginTop: 16,
-textAlign: 'center',
-// font-family: Roboto;
-fontSize: 16,
-fontStyle: 'normal',
-fontWeight: 400,
-// line-height: normal;
-  }
+    textAlign: "center",
+    // font-family: Roboto;
+    fontSize: 16,
+    fontStyle: "normal",
+    fontWeight: 400,
+    // line-height: normal;
+  },
+  showPassword: {
+    // fontFamily: "roboto",
+    position: "absolute",
+    top: 16,
+    right: 32,
+    fontWeight: 400,
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#1B4371",
+  },
 });
