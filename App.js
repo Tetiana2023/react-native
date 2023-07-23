@@ -1,4 +1,5 @@
-import { StatusBar } from "expo-status-bar";
+import {useState} from 'react';
+import PhotoBG from './assets/img/PhotoBG.png'
 import {
   StyleSheet,
   Text,
@@ -7,46 +8,63 @@ import {
   TextInput,
   TouchableOpacity,
   Platform,
+  KeyboardAvoidingView
 } from "react-native";
+import * as Font from 'expo-font';
+
+const LoadApplication = async ()=>{
+  await Font.loadAsync({})
+}
 
 export default function App() {
   console.log(Platform.OS);
-  const image = {
-    uri: "https://faktypro.com.ua/uploads/img/11-cikavih-faktiv-pro-gori.jpg",
-  };
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  // const image = {
+  //   uri: "https://faktypro.com.ua/uploads/img/11-cikavih-faktiv-pro-gori.jpg",
+  // };
   return (
     <View style={styles.container}>
-      <ImageBackground style={styles.image} source={image}>
-        <View style={styles.form}>
-          <Text style={styles.text}>Реєстрація</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Логін"
-            placeholderTextColor="#BDBDBD"
-          />
-          <View style={{ marginTop: 16, marginBottom: 16 }}>
-            <TextInput
-              style={styles.input}
-              placeholder="Адреса електронної пошти"
-              placeholderTextColor="#BDBDBD"
-            />
-          </View>
-          <View>
-            <TextInput
-              style={styles.input}
-              placeholder="Пароль"
-              secureTextEntry={true}
-              placeholderTextColor="#BDBDBD"
-            />
-            <Text style={styles.showPassword}>Показати</Text>
-          </View>
+      <ImageBackground style={styles.image} source={PhotoBG}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <View style={{...styles.form, marginBottom: isShowKeyboard ? -120 : 20}}>
+            <View style={styles.avatarWrapper}>
 
-          <TouchableOpacity activeOpacity={0.8} style={styles.button}>
-            <Text style={styles.btnTitle}>Зареєструватися</Text>
-          </TouchableOpacity>
-          <Text style={styles.finishText}>Вже є акаунт? Увійти</Text>
-        </View>
-        <StatusBar style="auto" />
+            </View>
+            <Text style={styles.text}>Реєстрація</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Логін"
+              placeholderTextColor="#BDBDBD"
+              onFocus={()=>setIsShowKeyboard(true)}
+            />
+            <View style={{ marginTop: 16, marginBottom: 16 }}>
+              <TextInput
+                style={styles.input}
+                placeholder="Адреса електронної пошти"
+                placeholderTextColor="#BDBDBD"
+                onFocus={()=>setIsShowKeyboard(true)}
+              />
+            </View>
+            <View>
+              <TextInput
+                style={styles.input}
+                placeholder="Пароль"
+                secureTextEntry={true}
+                placeholderTextColor="#BDBDBD"
+                onFocus={()=>setIsShowKeyboard(true)}
+              />
+              <Text style={styles.showPassword}>Показати</Text>
+            </View>
+
+            <TouchableOpacity activeOpacity={0.8} style={styles.button}>
+              <Text style={styles.btnTitle}>Зареєструватися</Text>
+            </TouchableOpacity>
+            <Text style={styles.finishText}>Вже є акаунт? Увійти</Text>
+          </View>
+        </KeyboardAvoidingView>
+        
       </ImageBackground>
     </View>
   );
@@ -61,8 +79,9 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     justifyContent: "flex-end",
+    // justifyContent: "centre",
     resizeMode: "cover",
-    // alignItems: "center",
+    alignItems: "center",
   },
   text: {
     color: "black",
@@ -71,6 +90,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 33,
+    marginTop: 92,
   },
   input: {
     borderColor: "#E8E8E8",
@@ -87,8 +107,10 @@ const styles = StyleSheet.create({
   form: {
     borderRadius: 25,
     backgroundColor: "#FFF",
-    width: 412,
-    height: 549,
+    position: "relative"
+    // width: 412,
+    // height: 549,
+    // marginBottom: -120,
     // marginHorizontal: 16,
   },
   button: {
@@ -118,6 +140,7 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     fontWeight: 400,
     // line-height: normal;
+    marginBottom: 66,
   },
   showPassword: {
     // fontFamily: "roboto",
@@ -128,5 +151,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
     color: "#1B4371",
+  },
+  avatarWrapper: {
+    top: -60,
+    position: "absolute",
+    width: 120,
+    height: 120,
+    backgroundColor: "#F6F6F6",
+    borderRadius: 16,
+    zIndex: 999,
+    marginHorizontal: 128,
   },
 });
