@@ -10,59 +10,38 @@ import {
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
-import * as Font from "expo-font";
-import { AppLoading } from "expo";
-
-const LoadApplication = async () => {
-  await Font.loadAsync({
-    "Roboto-Black": require("./assets/fonts/Roboto-Black.ttf"),
-  });
-};
+import { useFonts } from "expo-font";
 
 export default function App() {
   console.log(Platform.OS);
+  const [fontsLoaded] = useFonts({
+    "Roboto-Black": require("./assets/fonts/Roboto-Black.ttf"),
+  });
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [isReady, setIsReady] = useState(false);
+
   // const image = {
   //   uri: "https://faktypro.com.ua/uploads/img/11-cikavih-faktiv-pro-gori.jpg",
   // };
 
-  if (!isReady) {
-    return (
-      <AppLoading
-        startAsynk={LoadApplication}
-        onFinish={() => setIsReady(true)}
-        onError={console.warn}
-      />
-    );
+  if (!fontsLoaded) {
+    return null;
   }
   return (
     <View style={styles.container}>
       <ImageBackground style={styles.image} source={PhotoBG}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>
         <View style={styles.form}>
-          <View style={styles.avatarWrapper}>
-            <Image style={styles.avatarImg} />
-            <View style={styles.addAvatarButton}>
-              <Text style={styles.AddAvatarBtnText}>+</Text>
-            </View>
-          </View>
-          <Text style={styles.text}>Реєстрація</Text>
+          <Text style={styles.text}>Увійти</Text>
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
-            <View>
-              <View>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Логін"
-                  placeholderTextColor="#BDBDBD"
-                  onFocus={() => setIsShowKeyboard(true)}
-                />
-              </View>
+             <View>
               <View style={{ marginTop: 16, marginBottom: 16 }}>
                 <TextInput
-                  style={styles.input}
+                  style={{ ...styles.input }}
                   placeholder="Адреса електронної пошти"
                   placeholderTextColor="#BDBDBD"
                   onFocus={() => setIsShowKeyboard(true)}
@@ -83,8 +62,16 @@ export default function App() {
           <TouchableOpacity activeOpacity={0.8} style={styles.button}>
             <Text style={styles.btnTitle}>Зареєструватися</Text>
           </TouchableOpacity>
-          <Text style={styles.finishText}>Вже є акаунт? Увійти</Text>
+          <Text style={styles.finishText}>
+            Немає акаунту?
+            <Text
+              style={{ ...styles.finishText, textDecorationLine: "underline" }}
+            >
+              Зареєструватися
+            </Text>{" "}
+          </Text>
         </View>
+        </TouchableWithoutFeedback>
       </ImageBackground>
     </View>
   );
@@ -95,6 +82,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     justifyContent: "center",
+    alignItems: "center",
   },
   image: {
     flex: 1,
