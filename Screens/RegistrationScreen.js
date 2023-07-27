@@ -20,7 +20,7 @@ const initialState ={
   password: "",
 }
 
-export default function App() {
+export const RegistrationScreen = ()=> {
   console.log(Platform.OS);
   const [fontsLoaded] = useFonts({
     "Roboto-Black": require("./assets/fonts/Roboto-Black.ttf"),

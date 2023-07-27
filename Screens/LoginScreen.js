@@ -19,7 +19,7 @@ const initialState = {
   password: "",
 };
 
-export default function App() {
+export const LoginScreen = () => {
   console.log(Platform.OS);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
