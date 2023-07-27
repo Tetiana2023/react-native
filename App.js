@@ -15,52 +15,74 @@ import {
 } from "react-native";
 import { useFonts } from "expo-font";
 
+const initialState = {
+  email: "",
+  password: "",
+};
+
 export default function App() {
   console.log(Platform.OS);
-  const [fontsLoaded] = useFonts({
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [state, setState] = useState(initialState);
+
+ const [fontsLoaded] = useFonts({
     "Roboto-Black": require("./assets/fonts/Roboto-Black.ttf"),
   });
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-
-  // const image = {
-  //   uri: "https://faktypro.com.ua/uploads/img/11-cikavih-faktiv-pro-gori.jpg",
-  // };
-
   if (!fontsLoaded) {
     return null;
   }
+
+  const keyboardHide = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+    console.log(state)
+    setState(initialState);
+  };
   return (
-    <View style={styles.container}>
+    <TouchableWithoutFeedback onPress={keyboardHide}>
       <ImageBackground style={styles.image} source={PhotoBG}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>
-        <View style={styles.form}>
+        <View
+          style={{ ...styles.container, flex: isShowKeyboard ? 0.5 : 0.65 }}
+        >
           <Text style={styles.text}>Увійти</Text>
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
-             <View>
+            <View>
               <View style={{ marginTop: 16, marginBottom: 16 }}>
                 <TextInput
                   style={{ ...styles.input }}
+                  value={state.email}
                   placeholder="Адреса електронної пошти"
                   placeholderTextColor="#BDBDBD"
                   onFocus={() => setIsShowKeyboard(true)}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, email: value }))
+                  }
                 />
               </View>
               <View>
                 <TextInput
                   style={styles.input}
+                  value={state.password}
                   placeholder="Пароль"
                   secureTextEntry={true}
                   placeholderTextColor="#BDBDBD"
                   onFocus={() => setIsShowKeyboard(true)}
+                  onChangeText={(value) =>
+                    setState((prevState) => ({ ...prevState, password: value }))
+                  }
                 />
                 <Text style={styles.showPassword}>Показати</Text>
               </View>
             </View>
           </KeyboardAvoidingView>
-          <TouchableOpacity activeOpacity={0.8} style={styles.button}>
-            <Text style={styles.btnTitle}>Зареєструватися</Text>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.button}
+            onPress={keyboardHide}
+          >
+            <Text style={styles.btnTitle}>Увійти</Text>
           </TouchableOpacity>
           <Text style={styles.finishText}>
             Немає акаунту?
@@ -68,21 +90,23 @@ export default function App() {
               style={{ ...styles.finishText, textDecorationLine: "underline" }}
             >
               Зареєструватися
-            </Text>{" "}
+            </Text>
           </Text>
         </View>
-        </TouchableWithoutFeedback>
       </ImageBackground>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
-    justifyContent: "center",
     alignItems: "center",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    position: "relative",
+    width: "100%",
+    height: 489,
   },
   image: {
     flex: 1,
@@ -100,8 +124,8 @@ const styles = StyleSheet.create({
     lineHeight: 84,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 33,
-    marginTop: 54,
+    // marginBottom: 33,
+    // marginTop: 32,
   },
   input: {
     borderColor: "#E8E8E8",
