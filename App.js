@@ -42,7 +42,7 @@ export default function App() {
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <ImageBackground style={styles.image} source={PhotoBG}>
         <View
-          style={{ ...styles.container, flex: isShowKeyboard ? 0.5 : 0.65 }}
+          style={{ ...styles.container, flex: isShowKeyboard ? 0.6 : 0.5 }}
         >
           <Text style={styles.text}>Увійти</Text>
           <KeyboardAvoidingView
