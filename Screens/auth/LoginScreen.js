@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PhotoBG from "./assets/img/PhotoBG.png";
+import PhotoBG from "../../assets/img/PhotoBG.png";
 import {
   StyleSheet,
   Text,
@@ -12,29 +12,21 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import { useFonts } from "expo-font";
 
 const initialState = {
   email: "",
   password: "",
 };
 
-export const LoginScreen = () => {
+export const LoginScreen = ({ navigation }) => {
   console.log(Platform.OS);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
 
- const [fontsLoaded] = useFonts({
-    "Roboto-Black": require("./assets/fonts/Roboto-Black.ttf"),
-  });
-  if (!fontsLoaded) {
-    return null;
-  }
-
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    console.log(state)
+    console.log(state);
     setState(initialState);
   };
   return (
@@ -83,19 +75,26 @@ export const LoginScreen = () => {
           >
             <Text style={styles.btnTitle}>Увійти</Text>
           </TouchableOpacity>
-          <Text style={styles.finishText}>
-            Немає акаунту?
-            <Text
-              style={{ ...styles.finishText, textDecorationLine: "underline" }}
-            >
-              Зареєструватися
+          <TouchableOpacity
+            onPress={() => navigation.navigate("RegistrationScreen")}
+          >
+            <Text style={styles.finishText}>
+              Немає акаунту?
+              <Text
+                style={{
+                  ...styles.finishText,
+                  textDecorationLine: "underline",
+                }}
+              >
+                Зареєструватися
+              </Text>
             </Text>
-          </Text>
+          </TouchableOpacity>
         </View>
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

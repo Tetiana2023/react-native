@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PhotoBG from "./assets/img/PhotoBG.png";
+import PhotoBG from "../../assets/img/PhotoBG.png";
 import {
   StyleSheet,
   Text,
@@ -12,32 +12,26 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
 } from "react-native";
-import { useFonts } from "expo-font";
 
-const initialState ={
+const initialState = {
   login: "",
   email: "",
   password: "",
-}
+};
 
-export const RegistrationScreen = ()=> {
+export const RegistrationScreen = ({ navigation }) => {
   console.log(Platform.OS);
-  const [fontsLoaded] = useFonts({
-    "Roboto-Black": require("./assets/fonts/Roboto-Black.ttf"),
-  });
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
+  const [activeInput, setActiveInput] = useState("");
   // const image = {
   //   uri: "https://faktypro.com.ua/uploads/img/11-cikavih-faktiv-pro-gori.jpg",
   // };
 
-  if (!fontsLoaded) {
-    return null;
-  }
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    console.log(state)
+    console.log(state);
     setState(initialState);
   };
 
@@ -59,7 +53,11 @@ export const RegistrationScreen = ()=> {
               <View>
                 <View>
                   <TextInput
-                    style={styles.input}
+                    style={{
+                      ...styles.input,
+                      borderColor:
+                        activeInput === "login" ? "#FF6C00" : "#f6f6f6",
+                    }}
                     value={state.login}
                     placeholder="Логін"
                     placeholderTextColor="#BDBDBD"
@@ -71,7 +69,11 @@ export const RegistrationScreen = ()=> {
                 </View>
                 <View style={{ marginTop: 16, marginBottom: 16 }}>
                   <TextInput
-                    style={styles.input}
+                    style={{
+                      ...styles.input,
+                      borderColor:
+                        activeInput === "email" ? "#FF6C00" : "#f6f6f6",
+                    }}
                     value={state.email}
                     placeholder="Адреса електронної пошти"
                     placeholderTextColor="#BDBDBD"
@@ -83,14 +85,21 @@ export const RegistrationScreen = ()=> {
                 </View>
                 <View>
                   <TextInput
-                    style={styles.input}
+                    style={{
+                      ...styles.input,
+                      borderColor:
+                        activeInput === "password" ? "#FF6C00" : "#f6f6f6",
+                    }}
                     value={state.password}
                     placeholder="Пароль"
                     secureTextEntry={true}
                     placeholderTextColor="#BDBDBD"
                     onFocus={() => setIsShowKeyboard(true)}
                     onChangeText={(value) =>
-                      setState((prevState) => ({ ...prevState, password: value }))
+                      setState((prevState) => ({
+                        ...prevState,
+                        password: value,
+                      }))
                     }
                   />
                   <Text style={styles.showPassword}>Показати</Text>
@@ -104,22 +113,27 @@ export const RegistrationScreen = ()=> {
             >
               <Text style={styles.btnTitle}>Зареєструватися</Text>
             </TouchableOpacity>
-            <Text style={styles.finishText}>
-              Вже є акаунт?
-              <Text style={styles.finishText}>Увійти</Text>
-            </Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("LoginScreen")}
+            >
+              <Text style={styles.finishText}>
+                Вже є акаунт?
+                <Text style={styles.finishText}>Увійти</Text>
+              </Text>
+            </TouchableOpacity>
           </View>
         </ImageBackground>
       </TouchableWithoutFeedback>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
     justifyContent: "center",
+    alignItems: "center",
   },
   image: {
     flex: 1,
@@ -157,7 +171,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     position: "relative",
     width: "100%",
-    height: 549,
+    height: 489,
   },
   button: {
     borderRadius: 100,
