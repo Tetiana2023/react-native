@@ -22,6 +22,7 @@ export const LoginScreen = ({ navigation }) => {
   console.log(Platform.OS);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
+  const [activeInput, setActiveInput] = useState("");
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
@@ -33,7 +34,7 @@ export const LoginScreen = ({ navigation }) => {
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <ImageBackground style={styles.image} source={PhotoBG}>
         <View
-          style={{ ...styles.container, flex: isShowKeyboard ? 0.5 : 0.65 }}
+          style={{ ...styles.container, flex: isShowKeyboard ? 0.6 : 0.5 }}
         >
           <Text style={styles.text}>Увійти</Text>
           <KeyboardAvoidingView
@@ -42,7 +43,11 @@ export const LoginScreen = ({ navigation }) => {
             <View>
               <View style={{ marginTop: 16, marginBottom: 16 }}>
                 <TextInput
-                  style={{ ...styles.input }}
+                  style={{
+                    ...styles.input,
+                    borderColor:
+                      activeInput === "login" ? "#FF6C00" : "#f6f6f6",
+                  }}
                   value={state.email}
                   placeholder="Адреса електронної пошти"
                   placeholderTextColor="#BDBDBD"
@@ -54,7 +59,11 @@ export const LoginScreen = ({ navigation }) => {
               </View>
               <View>
                 <TextInput
-                  style={styles.input}
+                  style={{
+                    ...styles.input,
+                    borderColor:
+                      activeInput === "login" ? "#FF6C00" : "#f6f6f6",
+                  }}
                   value={state.password}
                   placeholder="Пароль"
                   secureTextEntry={true}
@@ -126,7 +135,7 @@ const styles = StyleSheet.create({
     // marginTop: 32,
   },
   input: {
-    borderColor: "#E8E8E8",
+    // borderColor: "#E8E8E8",
     borderWidth: 1,
     width: 378,
     height: 50,

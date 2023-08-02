@@ -11,6 +11,7 @@ import {
   Platform,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 
 const initialState = {
@@ -39,7 +40,7 @@ export const RegistrationScreen = ({ navigation }) => {
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={keyboardHide}>
         <ImageBackground style={styles.image} source={PhotoBG}>
-          <View style={{ ...styles.form, flex: isShowKeyboard ? 0.5 : 0.65 }}>
+          <View style={{ ...styles.form, flex: isShowKeyboard ? 0.80 : 0.65 }}>
             <View style={styles.avatarWrapper}>
               <Image style={styles.avatarImg} />
               <View style={styles.addAvatarButton}>
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    fontFamily: "Roboto",
+    // fontFamily: "Roboto",
     fontStyle: "normal",
     fontWeight: 500,
     color: "black",
@@ -155,7 +156,6 @@ const styles = StyleSheet.create({
     marginTop: 54,
   },
   input: {
-    borderColor: "#E8E8E8",
     borderWidth: 1,
     width: 378,
     height: 50,

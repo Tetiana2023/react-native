@@ -3,7 +3,7 @@ import { View, Text,  StyleSheet} from "react-native";
 
 export const  CreatePostsScreen = ()=> {
     return (
-        <View styles={styles.container}>
+        <View style={styles.container}>
             <Text> CreatePostsScreen</Text>
         </View>
     )

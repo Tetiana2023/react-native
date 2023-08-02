@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text,  StyleSheet} from "react-native";
 
-export const PostsScreens = ()=> {
+export const PostsScreen = ()=> {
     return (
-        <View styles={styles.container}>
-            <Text> PostsScreens</Text>
+        <View style={styles.container}>
+            <Text > PostsScreen</Text>
         </View>
     )
 }
@@ -13,6 +13,5 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-    }
-
-})
+    },
+  })
