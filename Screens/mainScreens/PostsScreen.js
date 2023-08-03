@@ -1,21 +1,25 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
-import ExitBtn from "../../assets/img/log-out.png";
+// import ExitBtn from "../../assets/img/log-out.png";
 
 export const PostsScreen = () => {
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}> Публікації</Text>
-        <TouchableOpacity style={styles.exitBtn}>
-          onPress={}
-          <Image 
-           style={styles.exitIcon}
-          source={ExitBtn} />
-        </TouchableOpacity>
-      </View>
-    </View>
+            <Text> PostsScreen</Text>
+        </View>
+
+//    <View style={styles.container}>
+//       <View style={styles.header}>
+//         <Text style={styles.headerTitle}> Публікації</Text>
+//         <TouchableOpacity style={styles.exitBtn}>
+//           onPress={}
+//           <Image 
+//            style={styles.exitIcon}
+//           source={ExitBtn} />
+//         </TouchableOpacity>
+//       </View>
+//     </View>
   );
 };
 const styles = StyleSheet.create({
@@ -24,6 +28,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  header: {
+justifyContent: "center"
+  },
+  headerTitle: {
+fontSize: 20,
+  },
+  exitBtn:{
+    width: 24,
+    height: 24,
+  }, 
   exitIcon:{
     width: 24,
     height: 24,

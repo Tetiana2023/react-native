@@ -1,6 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { StyleSheet, View } from "react-native";
 
 const AuthStack = createNativeStackNavigator();
 const MainTab = createBottomTabNavigator();
@@ -13,7 +14,7 @@ import { RegistrationScreen } from "./Screens/auth/RegistrationScreen";
 import { PostsScreen } from "./Screens/mainScreens/PostsScreen";
 import { CreatePostsScreen } from "./Screens/mainScreens/CreatePostsScreen";
 import { ProfileScreen } from "./Screens/mainScreens/ProfileScreen";
-import { View } from "react-native-web";
+
 
 export const useRoute = (isAuth) => {
   if (!isAuth) {
@@ -33,15 +34,15 @@ export const useRoute = (isAuth) => {
     );
   }
   return (
-    <MainTab.Navigator
-      screenOptions={{
-        tabBarShowLable: false,
-        tabBarStyle:{
-          display:"flex",
-          justifyContent: "center", 
-          height:83,
-  }
-      }}
+    <MainTab.Navigator tabBarOptions={{ showLabel: false,  }}
+//       screenOptions={{
+//         tabBarShowLable: false,
+//         tabBarStyle:{
+//           display:"flex",
+//           justifyContent: "center", 
+//           height:83,
+//   }
+//       }}
     >
       <MainTab.Screen
         name="Home"
@@ -50,11 +51,11 @@ export const useRoute = (isAuth) => {
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             if (!focused) {
-              return <AntDesign name="appstore-o" size={24} color="rgba(33, 33, 33, 0.8)" />;
+              return <AntDesign name="appstore-o" size={24} color="rgba(33, 33, 33, 0.8)" />
             }
             return (
               <View style={styles.container}>
-                <AntDesign name="appstore-o" size={24} color="#FFF" />;
+                <AntDesign name="appstore-o" size={24} color="#FFF" />
               </View>
             );
           },
@@ -67,11 +68,11 @@ export const useRoute = (isAuth) => {
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             if (!focused) {
-              return <Feather name="plus" size={24} color="rgba(33, 33, 33, 0.8)" />;
+              return <Feather name="plus" size={24} color="rgba(33, 33, 33, 0.8)" />
             }
             return (
               <View style={styles.container}>
-                <Feather name="plus" size={24} color="#fff" />;
+                <Feather name="plus" size={24} color="#fff" />
               </View>
             );
           },
@@ -84,11 +85,11 @@ export const useRoute = (isAuth) => {
           headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             if (!focused) {
-              return <Feather name="user" size={24} color="rgba(33, 33, 33, 0.8)" />;
+              return <Feather name="user" size={24} color="rgba(33, 33, 33, 0.8)" />
             }
             return (
               <View style={styles.container}>
-                <Feather name="user" size={24} color="#fff" />;
+                <Feather name="user" size={24} color="#fff" />
               </View>
             );
           },

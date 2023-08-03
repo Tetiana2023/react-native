@@ -1,12 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native";
 
-import {} from "react-native";
 import { useFonts } from "expo-font";
+
 
 import { useRoute } from "./router";
 
 export default function App() {
-  console.log(Platform.OS);
+  // console.log(Platform.OS);
 const routing = useRoute({})
   const [fontsLoaded] = useFonts({
     "Roboto-Black": require("./assets/fonts/Roboto-Black.ttf"),
