@@ -34,15 +34,16 @@ export const useRoute = (isAuth) => {
     );
   }
   return (
-    <MainTab.Navigator tabBarOptions={{ showLabel: false,  }}
-//       screenOptions={{
-//         tabBarShowLable: false,
-//         tabBarStyle:{
-//           display:"flex",
-//           justifyContent: "center", 
-//           height:83,
-//   }
-//       }}
+    <MainTab.Navigator 
+    tabBarOptions={{ showLabel: false,  }}
+      screenOptions={{
+        tabBarShowLable: false,
+        tabBarStyle:{
+          display:"flex",
+          justifyContent: "center", 
+          height:83,
+  }
+      }}
     >
       <MainTab.Screen
         name="Home"
