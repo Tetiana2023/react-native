@@ -27,9 +27,15 @@ export const LoginScreen = ({ navigation }) => {
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    console.log(state);
-    setState(initialState);
-  };
+   
+  }
+
+const handleSubmit = ()=> {
+  setIsShowKeyboard(false);
+  Keyboard.dismiss();
+  console.log(state);
+  setState(initialState);
+}
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <ImageBackground style={styles.image} source={PhotoBG}>
@@ -80,7 +86,7 @@ export const LoginScreen = ({ navigation }) => {
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.button}
-            onPress={keyboardHide}
+            onPress={handleSubmit}
           >
             <Text style={styles.btnTitle}>Увійти</Text>
           </TouchableOpacity>

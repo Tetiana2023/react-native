@@ -28,8 +28,14 @@ export const RegistrationScreen = ({ navigation }) => {
   // const image = {
   //   uri: "https://faktypro.com.ua/uploads/img/11-cikavih-faktiv-pro-gori.jpg",
   // };
-
+  
   const keyboardHide = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+   
+  }
+
+  const handleSubmit = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
     console.log(state);
@@ -110,7 +116,7 @@ export const RegistrationScreen = ({ navigation }) => {
             <TouchableOpacity
               activeOpacity={0.8}
               style={styles.button}
-              onPress={keyboardHide}
+              onPress={handleSubmit}
             >
               <Text style={styles.btnTitle}>Зареєструватися</Text>
             </TouchableOpacity>

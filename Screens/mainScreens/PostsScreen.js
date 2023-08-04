@@ -24,25 +24,41 @@ export const PostsScreen = () => {
 };
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
+   position: 'relative', 
+   flex: 1,
+    // justifyContent: "center",
     alignItems: "center",
-    position: 'relative',
+    backgroundColor: "#fff",
+
+    
   },
   header: {
+    width: "100%",
     height: 60,
     position: "relative",
     top: 1,
     display: "flex",
     alignItems: "center",
+    paddingTop: 28,
+    borderBottomWidth: 1,
+    borderColor:"rgba(0, 0, 0, 0.3)"
 
   },
   headerTitle: {
-fontSize: 20,
+    width:97,
+    fontFamily: 'Roboto',
+    fontStyle: "normal",
+    fontWeight: 500,
+    fontSize: 17,
+    lineHeight: 22,
+    letterSpacing: -0.408,
+    textAlign: "center",
+    color: "#212121",
   },
   exitBtn:{
-    width: 24,
-    height: 24,
+    position: "absolute",
+        top: 28,
+        right:12,
   }, 
   exitIcon:{
     width: 24,
