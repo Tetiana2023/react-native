@@ -29,17 +29,17 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
-
-    
+      
   },
   header: {
     width: "100%",
-    height: 60,
+    height: 100,
     position: "relative",
     top: 1,
     display: "flex",
     alignItems: "center",
-    paddingTop: 28,
+    justifyContent: 'center',
+    paddingTop: 38,
     borderBottomWidth: 1,
     borderColor:"rgba(0, 0, 0, 0.3)"
 
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   },
   exitBtn:{
     position: "absolute",
-        top: 28,
+        top: 58,
         right:12,
   }, 
   exitIcon:{
