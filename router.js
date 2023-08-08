@@ -46,7 +46,7 @@ export const useRoute = (isAuth) => {
       }}
     >
       <MainTab.Screen
-        name="Home"
+        name="Posts"
         component={PostsScreen}
         options={{
           headerShown: false,

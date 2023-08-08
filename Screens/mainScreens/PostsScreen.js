@@ -1,35 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { FlatList } from "react-native-web";
 
 import ExitBtn from "../../assets/img/log-out.png";
 
-export const PostsScreen = () => {
+export const PostsScreen = ({ route }) => {
+  const [posts, setPosts] = useState([]);
+  console.log("route.params", route.params);
+  useEffect(() => {
+    setPosts((prevState) => [...prevState, route.params]);
+  }, [route.params]);
   return (
     // <View style={styles.container}>
     //         <Text> PostsScreen</Text>
     //     </View>
 
-   <View style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}> Публікації</Text>
-        <TouchableOpacity style={styles.exitBtn} >
-         
-          <Image 
-           style={styles.exitIcon}
-          source={ExitBtn} />
+        <TouchableOpacity style={styles.exitBtn}>
+          <Image style={styles.exitIcon} source={ExitBtn} />
         </TouchableOpacity>
+      </View>
+      <View>
+        <FlatList
+          data={posts}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View>
+              <Image source={{uri: item.photo}} style={{height: 240, marginHorizontal: 16}}/>
+            </View>
+          )}
+        />
       </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
-   position: 'relative', 
-   flex: 1,
+    position: "relative",
+    flex: 1,
     // justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
-      
   },
   header: {
     width: "100%",
@@ -38,15 +51,14 @@ const styles = StyleSheet.create({
     top: 1,
     display: "flex",
     alignItems: "center",
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingTop: 38,
     borderBottomWidth: 1,
-    borderColor:"rgba(0, 0, 0, 0.3)"
-
+    borderColor: "rgba(0, 0, 0, 0.3)",
   },
   headerTitle: {
-    width:97,
-    fontFamily: 'Roboto',
+    width: 97,
+    fontFamily: "Roboto",
     fontStyle: "normal",
     fontWeight: 500,
     fontSize: 17,
@@ -55,13 +67,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#212121",
   },
-  exitBtn:{
+  exitBtn: {
     position: "absolute",
-        top: 58,
-        right:12,
-  }, 
-  exitIcon:{
+    top: 58,
+    right: 12,
+  },
+  exitIcon: {
     width: 24,
     height: 24,
-  }
+  },
 });

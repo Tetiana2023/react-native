@@ -15,7 +15,7 @@ import { Camera } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
 import { SimpleLineIcons } from '@expo/vector-icons'; 
 
-export const CreatePostsScreen = () => {
+export const CreatePostsScreen = ({navigation}) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [photoName, setPhotoName] = useState("");
@@ -37,6 +37,7 @@ export const CreatePostsScreen = () => {
 
     setPhotoName("");
     setPhotoLocation("");
+    navigation.navigate("Posts", {photo})
  };
  const keyboardHide = () => {
     Keyboard.dismiss();
@@ -46,7 +47,7 @@ export const CreatePostsScreen = () => {
     const photo = await camera.takePictureAsync();
 
     setPhoto(photo.uri);
-    // console.log(photo);
+    
   };
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -65,7 +66,7 @@ export const CreatePostsScreen = () => {
     <TouchableWithoutFeedback onPress={keyboardHide}>
  <View style={styles.container}>
       {camera ? (
-        <View>
+        <View style={{borderRadius: 8}}>
           <Camera style={styles.camera} ref={setCamera}>
             <View style={styles.takePhotoContainer}>
               {photo && (
