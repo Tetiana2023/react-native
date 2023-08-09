@@ -21,14 +21,14 @@ export const PostsScreen = () => {
         name="DefaultScreen"
         component={DefaultPostsScreen}
       />
-      {/* <NestedScreen.Screen
+      <NestedScreen.Screen
         name="Коментарі"
         component={CommentsScreen}
       />
       <NestedScreen.Screen
         name="Карти"
         component={MapScreen}
-      /> */}
+      />
     </NestedScreen.Navigator>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import * as ImagePicker from "expo-image-picker";
+import * as Location from "expo-location";
 import { useState, useEffect } from "react";
 import {
   View,
@@ -9,46 +10,45 @@ import {
   Image,
   TextInput,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import { Camera } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
-import { SimpleLineIcons } from '@expo/vector-icons'; 
+import { SimpleLineIcons } from "@expo/vector-icons";
 
-export const CreatePostsScreen = ({navigation}) => {
+export const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [photoName, setPhotoName] = useState("");
-  const [photoLocation, setPhotoLocation]= useState('');
+  const [photoLocation, setPhotoLocation] = useState("");
 
   useEffect(() => {
     (async () => {
-       const { status } = await Camera.requestCameraPermissionsAsync();
-       if (status === "granted") {
-          setCamera(true);
-       }
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      if (status === "granted") {
+        setCamera(true);
+      }
     })();
- }, []);
+  }, []);
 
   const handleSubmit = () => {
     Keyboard.dismiss();
 
     // console.log({ photoName, photoLocation });
- navigation.navigate("DefaultScreen", {photo})
+    navigation.navigate("DefaultScreen", { photo, photoName, photoLocation });
 
+    setPhoto(null);
     setPhotoName("");
     setPhotoLocation("");
-   
- };
- const keyboardHide = () => {
+  };
+  const keyboardHide = () => {
     Keyboard.dismiss();
- };
+  };
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
 
     setPhoto(photo.uri);
-    
   };
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -65,59 +65,66 @@ export const CreatePostsScreen = ({navigation}) => {
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
- <View style={styles.container}>
-      {camera ? (
-        <View style={{borderRadius: 8}}>
-          <Camera style={styles.camera} ref={setCamera}>
-            <View style={styles.takePhotoContainer}>
-              {photo && (
-                <Image source={{ uri: photo }} style={styles.prewImg} />
+      <View style={styles.container}>
+        {camera ? (
+          <View style={{ borderRadius: 8 }}>
+            <Camera style={styles.camera} ref={setCamera}>
+              <View style={styles.takePhotoContainer}>
+                {photo && (
+                  <Image source={{ uri: photo }} style={styles.prewImg} />
+                )}
+              </View>
+
+              {!photo && (
+                <TouchableOpacity
+                  style={styles.iconContainer}
+                  onPress={takePhoto}
+                >
+                  <Ionicons name="camera" size={24} color="#BDBDBD" />
+                </TouchableOpacity>
               )}
-            </View>
-
-            {!photo && (
-              <TouchableOpacity
-                style={styles.iconContainer}
-                onPress={takePhoto}
-              >
-                <Ionicons name="camera" size={24} color="#BDBDBD" />
-              </TouchableOpacity>
-            )}
-          </Camera>
-        </View>
-      ) : (
-        <Text>Камера не доступна </Text>
-      )}
-      <TouchableOpacity style={styles.uploadBtn} onPress={pickImage}>
-        <Text style={styles.uploadText}>Завантажте фото</Text>
-      </TouchableOpacity>
-      <View>
-        <TextInput
-          plaseholder="Назва..."
-          style={styles.input}
-          value={photoName}
-          onChangeText={(value) => {
-            setPhotoName(value);
-          }}
-        />
-            <TextInput
-          plaseholder="Місцевість..."
-          style={styles.input}
-          value={photoLocation}
-          onChangeText={(value) => {
-            setPhotoLocation(value);
-          }}
-        />
-        <SimpleLineIcons  style={styles.iconLocation}
-        name="location-pin" size={24} color="#BDBDBD" />
-
-        <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit} activeOpacity={0.8}>
-            <Text style={styles.submitBtnTitle}>Опублікувати</Text>
+            </Camera>
+          </View>
+        ) : (
+          <Text>Камера не доступна </Text>
+        )}
+        <TouchableOpacity style={styles.uploadBtn} onPress={pickImage}>
+          <Text style={styles.uploadText}>Завантажте фото</Text>
         </TouchableOpacity>
+        <View>
+          <TextInput
+            plaseholder="Назва..."
+            style={styles.input}
+            value={photoName}
+            onChangeText={(value) => {
+              setPhotoName(value);
+            }}
+          />
+          <TextInput
+            plaseholder="Місцевість..."
+            style={styles.input}
+            value={photoLocation}
+            onChangeText={(value) => {
+              setPhotoLocation(value);
+            }}
+          />
+          <SimpleLineIcons
+            style={styles.iconLocation}
+            name="location-pin"
+            size={24}
+            color="#BDBDBD"
+          />
+
+          <TouchableOpacity
+            style={styles.submitBtn}
+            onPress={handleSubmit}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.submitBtnTitle}>Опублікувати</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
     </TouchableWithoutFeedback>
-   
   );
 };
 const styles = StyleSheet.create({
@@ -170,13 +177,13 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     borderBottomWidth: 1,
     borderBottomColor: "#E8E8E8",
- },
- iconLocation: {
+  },
+  iconLocation: {
     position: "absolute",
     bottom: 127,
     marginLeft: 14,
- },
- submitBtn:{
+  },
+  submitBtn: {
     marginRight: 16,
     marginLeft: 16,
     height: 51,
@@ -186,15 +193,13 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     marginBottom: 16,
     marginTop: 43,
- },
- submitBtnTitle: {
+  },
+  submitBtnTitle: {
     color: "#BDBDBD",
-textAlign: "center",
-// font-family: Roboto;
-fontSize: 16,
-fontStyle: "normal",
-fontWeight: 400,
-
-
- }
+    textAlign: "center",
+    // font-family: Roboto;
+    fontSize: 16,
+    fontStyle: "normal",
+    fontWeight: 400,
+  },
 });
