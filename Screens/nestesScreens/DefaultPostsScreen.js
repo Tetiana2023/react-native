@@ -54,14 +54,14 @@ export const DefaultPostsScreen = ({ route, navigation }) => {
                 }}
               >
                 <TouchableOpacity
-                  onPress={navigation.navigate("Коментарі", {id: item.id,
+                  onPress={()=> navigation.navigate("Коментарі", {id: item.id,
                     photo: item.photo,
                   })}
                 >
                   <Feather name="message-circle" size={24} color="#BDBDBD" />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={navigation.navigate("Мапи", {
+                  onPress={()=> navigation.navigate("Мапи", {
                     location: item.location,
                   })}
                 >
@@ -122,5 +122,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontStyle: "normal",
     fontWeight: 500,
+    
   },
 });

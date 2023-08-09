@@ -111,13 +111,13 @@ export const CreatePostsScreen = ({ navigation }) => {
           </TouchableOpacity>
           <View>
             <TextInput
-              plaseholder="Назва..."
+              placeholder="Назва..."
               style={styles.input}
               value={photoName}
               onChangeText={setPhotoName}
             />
             <TextInput
-              plaseholder="Місцевість..."
+              placeholder="Місцевість..."
               style={styles.input}
               value={photoLocation}
               onChangeText={setPhotoLocation}
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
     marginLeft: 16,
     height: 51,
-    backgroundColor: "#FF6C00",
+    backgroundColor: "##F6F6F6",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 100,
