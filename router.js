@@ -36,7 +36,7 @@ export const useRoute = (isAuth) => {
   return (
     <MainTab.Navigator 
     tabBarOptions={{ showLabel: false,  }}
-      screenOptions={{
+      screenOptions={{ 
         tabBarShowLable: false,
         tabBarStyle:{
           display:"flex",

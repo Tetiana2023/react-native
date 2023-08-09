@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image,  FlatList } from "react-native";
-
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  FlatList,
+} from "react-native";
+// import { SectionListComponent } from "react-native/types";
+import { Feather } from "@expo/vector-icons";
 
 import ExitBtn from "../../assets/img/log-out.png";
 
 export const DefaultPostsScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
+
   console.log("route.params", route.params);
   useEffect(() => {
-    if(route.params)
-    setPosts((prevState) => [...prevState, route.params]);
+    if (route.params) setPosts((prevState) => [...prevState, route.params]);
   }, [route.params]);
   return (
     // <View style={styles.container}>
@@ -28,10 +36,40 @@ export const DefaultPostsScreen = ({ route, navigation }) => {
           data={posts}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
-            <View>
-              <Image source={{uri: item.photo}} style={{height: 240, marginHorizontal: 16}}/>
+            <View
+              style={{marginHorizontal: 16, marginBottom: 15, marginTop: 32 }}
+            >
+              <Image
+                source={{ uri: item.photo }}
+                style={{ height: 240, borderRadius: 8, }}
+              />
+              <View>
+                <Text style={styles.title}>{item.photoName}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginTop: 8,
+                }}
+              >
+                <TouchableOpacity
+                  onPress={navigation.navigate("Коментарі", {id: item.id,
+                    photo: item.photo,
+                  })}
+                >
+                  <Feather name="message-circle" size={24} color="#BDBDBD" />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={navigation.navigate("Мапи", {
+                    location: item.location,
+                  })}
+                >
+                  <Feather name="map-pin" size={24} color="#BDBDBD" />
+                  <Text>{item.photoLocation}</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-         
           )}
         />
       </View>
@@ -60,7 +98,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     width: 97,
-    fontFamily: "Roboto",
+    // fontFamily: "Roboto",
     fontStyle: "normal",
     fontWeight: 500,
     fontSize: 17,
@@ -77,5 +115,12 @@ const styles = StyleSheet.create({
   exitIcon: {
     width: 24,
     height: 24,
+  },
+  title: {
+    color: "#212121",
+    // fontFamily: "Roboto",
+    fontSize: 16,
+    fontStyle: "normal",
+    fontWeight: 500,
   },
 });

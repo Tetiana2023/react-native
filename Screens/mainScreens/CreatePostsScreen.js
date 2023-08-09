@@ -11,6 +11,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
+  KeyboardAvoidingView,
 } from "react-native";
 import { Camera } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
@@ -41,12 +42,11 @@ export const CreatePostsScreen = ({ navigation }) => {
     setPhotoName("");
     setPhotoLocation("");
   };
-  const keyboardHide = () => {
-    Keyboard.dismiss();
-  };
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
+    const location = await Location.getCurrentPositionAsync();
+    console.log("location", location);
 
     setPhoto(photo.uri);
   };
@@ -64,67 +64,82 @@ export const CreatePostsScreen = ({ navigation }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={keyboardHide}>
-      <View style={styles.container}>
-        {camera ? (
-          <View style={{ borderRadius: 8 }}>
-            <Camera style={styles.camera} ref={setCamera}>
-              <View style={styles.takePhotoContainer}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          {photo === null ? (
+            <View style={{ borderRadius: 8 }}>
+              <Camera style={styles.camera} ref={setCamera}>
                 {photo && (
-                  <Image source={{ uri: photo }} style={styles.prewImg} />
+                  <View style={styles.takePhotoContainer}>
+                    <Image source={{ uri: photo }} style={styles.prewImg} />
+                  </View>
                 )}
-              </View>
-
-              {!photo && (
                 <TouchableOpacity
                   style={styles.iconContainer}
                   onPress={takePhoto}
                 >
                   <Ionicons name="camera" size={24} color="#BDBDBD" />
                 </TouchableOpacity>
-              )}
-            </Camera>
-          </View>
-        ) : (
-          <Text>Камера не доступна </Text>
-        )}
-        <TouchableOpacity style={styles.uploadBtn} onPress={pickImage}>
-          <Text style={styles.uploadText}>Завантажте фото</Text>
-        </TouchableOpacity>
-        <View>
-          <TextInput
-            plaseholder="Назва..."
-            style={styles.input}
-            value={photoName}
-            onChangeText={(value) => {
-              setPhotoName(value);
-            }}
-          />
-          <TextInput
-            plaseholder="Місцевість..."
-            style={styles.input}
-            value={photoLocation}
-            onChangeText={(value) => {
-              setPhotoLocation(value);
-            }}
-          />
-          <SimpleLineIcons
-            style={styles.iconLocation}
-            name="location-pin"
-            size={24}
-            color="#BDBDBD"
-          />
-
-          <TouchableOpacity
-            style={styles.submitBtn}
-            onPress={handleSubmit}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.submitBtnTitle}>Опублікувати</Text>
+              </Camera>
+            </View>
+          ) : (
+            // (
+            //   <View style={styles.prewImg} >
+            //     <Text style={{ marginTop: 32, textAlign: "center" }}>Камера не доступна </Text>
+            //   </View>
+            // )
+            <View style={styles.camera}>
+              <View style={styles.takePhotoContainer}>
+                <Image source={{ uri: photo }} style={styles.prewImg} />
+                <TouchableOpacity
+                  style={{ ...styles.iconContainer }}
+                  onPress={() => setPhoto(null)}
+                >
+                  <Ionicons name="camera" size={24} color="#fff" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+          <TouchableOpacity style={styles.uploadBtn} onPress={pickImage}>
+            <Text style={styles.uploadText}>
+              {photo === null ? "Завантажте фото" : "Редагувати фото"}
+            </Text>
           </TouchableOpacity>
+          <View>
+            <TextInput
+              plaseholder="Назва..."
+              style={styles.input}
+              value={photoName}
+              onChangeText={setPhotoName}
+            />
+            <TextInput
+              plaseholder="Місцевість..."
+              style={styles.input}
+              value={photoLocation}
+              onChangeText={setPhotoLocation}
+            />
+            <SimpleLineIcons
+              style={styles.iconLocation}
+              name="location-pin"
+              size={24}
+              color="#BDBDBD"
+            />
+
+            <TouchableOpacity
+              style={styles.submitBtn}
+              onPress={handleSubmit}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.submitBtnTitle}>Опублікувати</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 const styles = StyleSheet.create({
