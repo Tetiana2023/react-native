@@ -33,11 +33,12 @@ export const CreatePostsScreen = ({navigation}) => {
   const handleSubmit = () => {
     Keyboard.dismiss();
 
-    console.log({ photoName, photoLocation });
+    // console.log({ photoName, photoLocation });
+ navigation.navigate("DefaultScreen", {photo})
 
     setPhotoName("");
     setPhotoLocation("");
-    navigation.navigate("Posts", {photo})
+   
  };
  const keyboardHide = () => {
     Keyboard.dismiss();
