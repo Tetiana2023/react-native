@@ -16,6 +16,7 @@ export const DefaultPostsScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
 
   console.log("route.params", route.params);
+
   useEffect(() => {
     if (route.params) setPosts((prevState) => [...prevState, route.params]);
   }, [route.params]);
@@ -54,7 +55,7 @@ export const DefaultPostsScreen = ({ route, navigation }) => {
                 }}
               >
                 <TouchableOpacity
-                  onPress={()=> navigation.navigate("Коментарі", {id: item.id,
+                  onPress={()=> navigation.navigate("Коментарі", {
                     photo: item.photo,
                   })}
                 >
@@ -62,7 +63,7 @@ export const DefaultPostsScreen = ({ route, navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={()=> navigation.navigate("Мапи", {
-                    location: item.location,
+                    location: item.photoLocation,
                   })}
                 >
                   <Feather name="map-pin" size={24} color="#BDBDBD" />

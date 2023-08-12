@@ -22,12 +22,15 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [photo, setPhoto] = useState(null);
   const [photoName, setPhotoName] = useState("");
   const [photoLocation, setPhotoLocation] = useState("");
+  const [errorMsg, setErrorMsg] = useState(null);
+  
 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       if (status === "granted") {
-        setCamera(true);
+        // setCamera(true);
+        setErrorMsg("Permission to access location was denied");
       }
     })();
   }, []);
@@ -44,11 +47,17 @@ export const CreatePostsScreen = ({ navigation }) => {
   };
 
   const takePhoto = async () => {
-    const photo = await camera.takePictureAsync();
-    const location = await Location.getCurrentPositionAsync();
-    console.log("location", location);
+    if (camera) {
+       const photo = await camera.takePictureAsync();
+       setPhoto(photo.uri);
 
-    setPhoto(photo.uri);
+    const location = await Location.getCurrentPositionAsync();
+    // console.log("location", location);
+    setPhotoLocation(location.coords)
+
+    
+    }
+   
   };
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
