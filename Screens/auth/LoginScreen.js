@@ -13,6 +13,9 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
+import {useDispatch} from 'react-redux';
+import {authSignInUser} from '../../redux1/auth/authOperations';
+
 const initialState = {
   email: "",
   password: "",
@@ -24,6 +27,8 @@ export const LoginScreen = ({ navigation }) => {
   const [state, setState] = useState(initialState);
   const [activeInput, setActiveInput] = useState("");
 
+  const dispatch = useDispatch();
+
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
@@ -33,14 +38,16 @@ export const LoginScreen = ({ navigation }) => {
 const handleSubmit = ()=> {
   setIsShowKeyboard(false);
   Keyboard.dismiss();
-  console.log(state);
+  // console.log(state);
+  dispatch(authSignInUser(state))
+
   setState(initialState);
 }
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <ImageBackground style={styles.image} source={PhotoBG}>
         <View
-          style={{ ...styles.container, flex: isShowKeyboard ? 0.6 : 0.5 }}
+          style={{ ...styles.container, flex: isShowKeyboard ? 0.70 : 0.5 }}
         >
           <Text style={styles.text}>Увійти</Text>
           <KeyboardAvoidingView

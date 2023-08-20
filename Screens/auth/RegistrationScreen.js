@@ -14,6 +14,10 @@ import {
   Keyboard,
 } from "react-native";
 
+import {useDispatch} from 'react-redux';
+
+import {authSignUpUser} from '../../redux1/auth/authOperations';
+
 const initialState = {
   login: "",
   email: "",
@@ -25,6 +29,8 @@ export const RegistrationScreen = ({ navigation }) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
   const [activeInput, setActiveInput] = useState("");
+
+  const dispatch = useDispatch();
   // const image = {
   //   uri: "https://faktypro.com.ua/uploads/img/11-cikavih-faktiv-pro-gori.jpg",
   // };
@@ -38,7 +44,8 @@ export const RegistrationScreen = ({ navigation }) => {
   const handleSubmit = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    console.log(state);
+    // console.log(state);
+    dispatch(authSignUpUser(state))
     setState(initialState);
   };
 
