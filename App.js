@@ -1,36 +1,38 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { useState } from "react";
-import { useFonts } from "expo-font";
+import React from "react";
+import { StyleSheet } from "react-native";
 
+import { useFonts } from "expo-font";
 import {Provider} from 'react-redux';
-import { useRoute } from "./router";
 import { store } from "./redux1/store";
 
-import db from './firebase/config';
+import { Main } from "./Components/Main";
 
-export default function App() {
+
+const  App = ()=>  {
   // console.log(Platform.OS);
 
   const [fontsLoaded] = useFonts({
-    "Roboto-Black": require("./assets/fonts/Roboto-Black.ttf"),
+    "Roboto": require("./assets/fonts/Roboto-Black.ttf"),
   });
-  const [user, setUser] = useState(null);
 
-  db.auth().onAuthStateChanged((user)=>console.log(user) )
-  const routing = useRoute(user);
-  
-  if (!fontsLoaded) {
+    if (!fontsLoaded) {
     return null;
   }
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-     {routing}
-    </NavigationContainer>
+     <Main/>
     </Provider>
     
   );
 }
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+export default App;
 
