@@ -17,6 +17,9 @@ import { Camera } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 
+import { db, storage } from "../../firebase/config";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 export const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
@@ -37,6 +40,7 @@ export const CreatePostsScreen = ({ navigation }) => {
 
   const handleSubmit = () => {
     Keyboard.dismiss();
+    uploadPhotoToServer();
 
     // console.log({ photoName, photoLocation });
     navigation.navigate("DefaultScreen", { photo, photoName, photoLocation });
@@ -45,6 +49,18 @@ export const CreatePostsScreen = ({ navigation }) => {
     setPhotoName("");
     setPhotoLocation("");
   };
+
+  const uploadPhotoToServer = async()=> {
+     const response = await fetch(photo);
+     const file = await response.blob();
+     const uniquePostId = Date.now().toString()
+     const storageImage = await ref(storage, `postImage/${uniquePostId}`);
+     await uploadBytes(storageImage, file)
+     const addedPhoto = await getDownloadURL(storageImage);
+     // console.log(addedPhoto)
+     return addedPhoto;
+
+  }
 
   const takePhoto = async () => {
     if (camera) {
@@ -127,7 +143,7 @@ export const CreatePostsScreen = ({ navigation }) => {
             />
             <TextInput
               placeholder="Місцевість..."
-              style={styles.input}
+              style={{...styles.input, paddingLeft: 28}}
               value={photoLocation}
               onChangeText={setPhotoLocation}
             />
