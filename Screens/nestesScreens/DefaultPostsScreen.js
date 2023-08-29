@@ -9,17 +9,27 @@ import {
 } from "react-native";
 // import { SectionListComponent } from "react-native/types";
 import { Feather } from "@expo/vector-icons";
+import { db } from "../../firebase/config";
 
 import ExitBtn from "../../assets/img/log-out.png";
+
+import { collection, query, onSnapshot } from "firebase/firestore";
 
 export const DefaultPostsScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
 
+  const getAllPost = async () => {
+    const postsRef = query(collection(db, "post"));
+    onSnapshot(postsRef, (snapshot) => {
+      setPosts(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
+  };
+
   console.log("route.params", route.params);
 
   useEffect(() => {
-    if (route.params) setPosts((prevState) => [...prevState, route.params]);
-  }, [route.params]);
+   getAllPost()
+  }, []);
   return (
     // <View style={styles.container}>
     //         <Text> PostsScreen</Text>
@@ -38,11 +48,11 @@ export const DefaultPostsScreen = ({ route, navigation }) => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View
-              style={{marginHorizontal: 16, marginBottom: 15, marginTop: 32 }}
+              style={{ marginHorizontal: 16, marginBottom: 15, marginTop: 32 }}
             >
               <Image
                 source={{ uri: item.photo }}
-                style={{ height: 240, borderRadius: 8, }}
+                style={{ height: 240, borderRadius: 8 }}
               />
               <View>
                 <Text style={styles.title}>{item.photoName}</Text>
@@ -55,16 +65,20 @@ export const DefaultPostsScreen = ({ route, navigation }) => {
                 }}
               >
                 <TouchableOpacity
-                  onPress={()=> navigation.navigate("Коментарі", {
-                    photo: item.photo,
-                  })}
+                  onPress={() =>
+                    navigation.navigate("Коментарі", {
+                      photo: item.photo,
+                    })
+                  }
                 >
                   <Feather name="message-circle" size={24} color="#BDBDBD" />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={()=> navigation.navigate("Мапи", {
-                    location: item.photoLocation,
-                  })}
+                  onPress={() =>
+                    navigation.navigate("Мапи", {
+                      location: item.location,
+                    })
+                  }
                 >
                   <Feather name="map-pin" size={24} color="#BDBDBD" />
                   <Text>{item.photoLocation}</Text>
@@ -123,6 +137,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontStyle: "normal",
     fontWeight: 500,
-    
   },
 });

@@ -2,6 +2,7 @@ import React from "react";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
   View,
   Text,
@@ -19,6 +20,7 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 
 import { db, storage } from "../../firebase/config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { addDoc, collection } from "firebase/firestore";
 
 export const CreatePostsScreen = ({ navigation }) => {
   const [camera, setCamera] = useState(null);
@@ -26,31 +28,56 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [photoName, setPhotoName] = useState("");
   const [photoLocation, setPhotoLocation] = useState("");
   const [errorMsg, setErrorMsg] = useState(null);
+
+  const [location, setLocation] = useState(null);
+
+  const { userId, nickName } = useSelector((state) => state.auth);
   
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      const coords = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      setLocation(coords);
+    })();
+  }, []);
 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       if (status === "granted") {
-        // setCamera(true);
+         setCamera(true);
         setErrorMsg("Permission to access location was denied");
       }
+      // await MediaLibrary.requestPermissionsAsync();
+
+      // setHasPermission(status === "granted");
     })();
   }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     let { status } = await Camera.requestCameraPermissionsAsync();
+  //     if (status === "granted") {
+  //       // setCamera(true);
+  //       setErrorMsg("Permission to access location was denied");
+  //     }
+  //     let location = await Location.getCurrentPositionAsync({});
+  //     const coords = {
+  //       latitude: location.coords.latitude,
+  //       longitude: location.coords.longitude,
+  //     };
+  //     setLocation(coords);
+  //   })();
+  // }, []);
 
-  const handleSubmit = () => {
-    Keyboard.dismiss();
-    uploadPhotoToServer();
-
-    // console.log({ photoName, photoLocation });
-    navigation.navigate("DefaultScreen", { photo, photoName, photoLocation });
-
-    setPhoto(null);
-    setPhotoName("");
-    setPhotoLocation("");
-  };
-
-  const uploadPhotoToServer = async()=> {
+    const uploadPhotoToServer = async()=> {
      const response = await fetch(photo);
      const file = await response.blob();
      const uniquePostId = Date.now().toString()
@@ -62,19 +89,61 @@ export const CreatePostsScreen = ({ navigation }) => {
 
   }
 
+  const uploadPostToServer= async()=> {
+    const photo = await uploadPhotoToServer();
+    const createPost = {
+      photo,
+      photoTitle,
+      photoLocation,
+      location,
+      userId,
+      nickName,
+    };
+    uploadPostToDatabase(createPost);
+    navigation.navigate("posts", {
+      photo,
+      photoTitle,
+      photoLocation,
+      location,
+    });
+    setPhoto(null);
+    setPhotoName("");
+    setPhotoLocation("");
+  };
+
+  const uploadPostToDatabase = async (post) => {
+    //  await addDoc(collection(db, "post"), post);
+    const docRef = await addDoc(collection(db, "post"), post);
+  };
+  
+
   const takePhoto = async () => {
     if (camera) {
        const photo = await camera.takePictureAsync();
        setPhoto(photo.uri);
 
-    const location = await Location.getCurrentPositionAsync();
-    // console.log("location", location);
-    setPhotoLocation(location.coords)
-
-    
     }
    
   };
+  const handleSubmit = () => {
+    Keyboard.dismiss();
+    uploadPostToServer();
+
+    // console.log({ photoName, photoLocation });
+    navigation.navigate("DefaultScreen");
+
+    let location =  Location.getCurrentPositionAsync({});
+    const coords = {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    };
+    setLocation(coords);
+
+    setPhoto(null);
+    setPhotoName("");
+    setPhotoLocation("");
+  };
+
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
